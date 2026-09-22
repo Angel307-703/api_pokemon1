@@ -27,6 +27,13 @@ export default function App() {
 
       const totalStats = data.stats.reduce((acc, stat) => acc + stat.base_stat, 0);
 
+      let clasificacion = 'Balanceado';
+      if (totalStats < 300) {
+        clasificacion = 'Débil';
+      } else if (totalStats > 450) {
+        clasificacion = 'Poderoso';
+      }
+
       setPokemon({
         nombre: data.name,
         imagen: data.sprites.front_default,
@@ -35,7 +42,7 @@ export default function App() {
         ataque: ataqueReal,
         total: totalStats,
         tipos: data.types.map(t => t.type.name).join(', '),
-        clasificacion: totalStats > 300 ? 'Débil' : 'Poderoso'
+        clasificacion: clasificacion
       });
     } catch (err) {
       setError(err.message);
