@@ -21,7 +21,10 @@ export default function App() {
       const data = await res.json();
 
       const alturaMetros = data.height / 10;
-      const ataque = data.stats[0]?.base_stat || 0;
+      
+      const statAtaque = data.stats.find(s => s.stat.name === 'attack');
+      const ataqueReal = statAtaque ? statAtaque.base_stat : 0;
+
       const totalStats = data.stats.reduce((acc, stat) => acc + stat.base_stat, 0);
 
       setPokemon({
@@ -29,7 +32,7 @@ export default function App() {
         imagen: data.sprites.front_default,
         altura: alturaMetros,
         peso: data.weight / 10,
-        ataque: ataque,
+        ataque: ataqueReal,
         total: totalStats,
         tipos: data.types.map(t => t.type.name).join(', '),
         clasificacion: totalStats > 300 ? 'Débil' : 'Poderoso'
